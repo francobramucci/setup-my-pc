@@ -1,0 +1,52 @@
+#Google Chrome
+wget https://dl-ssl.google.com/linux/linux_signing_key.pub -O /tmp/google.pub
+
+gpg --no-default-keyring --keyring /etc/apt/keyrings/google-chrome.gpg --import /tmp/google.pub
+
+echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+
+sudo apt-get update 
+sudo apt-get install google-chrome-stable -y
+
+#Kitty
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+echo export "PATH=~/.local/bin:$PATH" ~/.bashrc
+mkdir ~/.local/bin
+
+# Create symbolic links to add kitty and kitten to PATH (assuming ~/.local/bin is in
+# your system-wide PATH)
+ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
+# Place the kitty.desktop file somewhere it can be found by the OS
+cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+# If you want to open text files and images in kitty via your file manager also add the kitty-open.desktop file
+cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+# Update the paths to the kitty and its icon in the kitty desktop file(s)
+sed -i "s|Icon=kitty|Icon=/home/$USER/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+sed -i "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+
+# Create symbolic link to add kitty to /usr/bin
+ln -s ~/.local/kitty.app/kitty /usr/bin/kitty
+
+# Register kitty terminal
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/kitty 50
+
+# Select your terminal
+sudo update-alternatives --config x-terminal-emulator
+
+#Install Nerd Font
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
+cp -r FiraCode ~/.local/share/fonts
+fc-cache -f -v
+
+#Make
+sudo apt install make -y
+sudo apt install gcc -y
+sudo apt install g++ -y
+
+# Agregar comandos a .inputrc
+# Subir archivo kitty.conf
+# Agregar juegos
+
+
+
+
